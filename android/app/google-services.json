@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "342604250425",
+    "project_id": "stridezbackend",
+    "storage_bucket": "stridezbackend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342604250425:android:867f93737803b6d3893ce8",
+        "android_client_info": {
+          "package_name": "com.four.stridez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342604250425-28j765bqdfp4ijotbum85sh3rloilm42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.four.stridez",
+            "certificate_hash": "0d124ed7c9d5ef0fbbc26c0694efca511c8c082c"
+          }
+        },
+        {
+          "client_id": "342604250425-7dcudis3jlg73hamq3lc5mv7r5vn762j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDedw10skFMEzt4vydn9qnOjDS6V1dhRg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342604250425-7dcudis3jlg73hamq3lc5mv7r5vn762j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
