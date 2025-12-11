@@ -18,7 +18,7 @@ Proyek ini disusun dan dikembangkan oleh:
 ---
 
 LINK VIDEO DEMO PROJECT
-
+https://drive.google.com/drive/folders/15LKObGuD6PKJh3Jew6F_C4d4PdHAhyMH?usp=drive_link
 ---
 
 ## 1. Pendahuluan
@@ -61,51 +61,94 @@ Tahap penulisan kode dilakukan menggunakan **Flutter Framework** dengan bahasa *
 
 ---
 
-## 3. Implementasi Fitur & Teknis
+## 3. Implementasi Fitur Teknis
 
-### 3.1 Algoritma Pedometer (Penghitung Langkah)
-Fitur ini bekerja tanpa bergantung pada Google Fit API, melainkan memproses data sensor mentah secara mandiri.
-* **Logika Deteksi:** Menggunakan **Magnitude Vector** dari data akselerometer 3-sumbu ($x, y, z$) dengan rumus $\sqrt{x^2 + y^2 + z^2}$.
-* **Filterisasi:** Menerapkan *threshold* dinamis (batas bawah `10.5` dan batas atas `30.0`) untuk membedakan gerakan langkah kaki dengan getaran acak.
-* **Cooldown Mechanism:** Menerapkan jeda waktu (*cooldown*) antar deteksi untuk mencegah perhitungan ganda (*double-counting*).
+### 3.1 Algoritma Pedometer
+Fitur ini memproses data sensor mentah secara mandiri:
+* **Logika Deteksi:** Menggunakan **Magnitude Vector** ($\sqrt{x^2 + y^2 + z^2}$) dari akselerometer 3-sumbu.
+* **Filterisasi:** *Threshold* dinamis (`10.5` - `30.0`) untuk membedakan langkah kaki dengan getaran acak.
+* **Cooldown:** Menerapkan jeda waktu untuk mencegah *double-counting*.
 
-### 3.2 Pelacakan Lari Berbasis GPS (Geolocation)
-* **Polyline Rendering:** Aplikasi merekam koordinat (`LatLng`) secara *real-time* dan menggambarkannya sebagai garis rute pada peta Google Maps.
-* **Perhitungan Metrik:** Menggunakan formula *Haversine* untuk menghitung jarak tempuh, yang kemudian dikonversi menjadi kecepatan rata-rata (*Pace*) dan estimasi pembakaran kalori.
+### 3.2 Pelacakan Lari (GPS)
+* **Polyline Rendering:** Merekam koordinat (`LatLng`) real-time untuk visualisasi rute di peta.
+* **Metrik:** Formula *Haversine* untuk menghitung jarak tempuh, Pace, dan Kalori.
 
-### 3.3 Autentikasi Hybrid & Sinkronisasi Data
-Sistem login menggabungkan keamanan Firebase dengan fleksibilitas database backend SQL.
+### 3.3 Autentikasi Hybrid
 1.  **Firebase Auth:** Menangani validasi kredensial (Google Sign-In, OTP Telepon, Email).
-2.  **Backend Sync:** Setelah login berhasil, aplikasi menyinkronkan UID dan profil pengguna ke server backend (`REST API`) untuk persistensi data jangka panjang.
-3.  **Local Caching:** Data profil disimpan di `SharedPreferences` untuk akses cepat dan mode *offline*.
+2.  **Backend Sync:** Sinkronisasi UID dan profil ke server REST API MySQL setelah login berhasil.
+3.  **Local Caching:** Penyimpanan profil di `SharedPreferences`.
+
+### 3.4 Arsitektur Backend Server 
+
+Sisi server dibangun untuk menangani logika bisnis yang berat dan persistensi data secara terpusat.
+* **Framework:** Java 17 dan **Spring Boot 3.5.6**.
+* **Database:** **MySQL** (Production) untuk penyimpanan data permanen dan H2 (Testing).
+* **Keamanan:** Menggunakan **Firebase Admin SDK** untuk memverifikasi token pengguna dari aplikasi mobile.
+* **API:** Menyediakan *endpoints* RESTful untuk manajemen user dan riwayat aktivitas lari.
+---
+
+## 4. Implementasi Fitur Teknis
+
+### 4.1 Algoritma Pedometer
+Fitur ini memproses data sensor mentah secara mandiri:
+* **Logika Deteksi:** Menggunakan **Magnitude Vector** ($\sqrt{x^2 + y^2 + z^2}$) dari akselerometer 3-sumbu.
+* **Filterisasi:** *Threshold* dinamis (`10.5` - `30.0`) untuk membedakan langkah kaki dengan getaran acak.
+* **Cooldown:** Menerapkan jeda waktu untuk mencegah *double-counting*.
+
+### 4.2 Pelacakan Lari (GPS)
+* **Polyline Rendering:** Merekam koordinat (`LatLng`) real-time untuk visualisasi rute di peta.
+* **Metrik:** Formula *Haversine* untuk menghitung jarak tempuh, Pace, dan Kalori.
+
+### 4.3 Autentikasi Hybrid
+1.  **Firebase Auth:** Google Sign-In, OTP Telepon, Email.
+2.  **Backend Sync:** Sinkronisasi UID dan profil ke server REST API MySQL setelah login berhasil.
+3.  **Local Caching:** Penyimpanan profil di `SharedPreferences`.
 
 ---
 
-## 4. Hasil Akhir Proyek
+## 5. Struktur Direktori Proyek
 
+```text
+Stridez-Project/
+│
+├── mobile-app/ (Flutter)
+│   ├── lib/
+│   │   ├── main.dart           # Entry Point & Splash Screen
+│   │   ├── home_page.dart      # Dashboard & Sensor Logic
+│   │   ├── lari_start_page.dart# GPS Tracking Logic
+│   │   ├── backend_service.dart# HTTP Client (Spring Boot Integration)
+│   │   ├── auth_service.dart   # Firebase Auth Logic
+│   │   └── ...
+│   └── pubspec.yaml            # Dependensi Mobile
+│
+└── backend-server/ (Spring Boot)
+    ├── src/main/java/com/Stridez_Backend/
+    │   ├── controller/         # API Endpoints
+    │   ├── model/              # JPA Entities
+    │   ├── repository/         # Database Interfaces
+    │   └── service/            # Business Logic
+    ├── build.gradle            # Dependensi Backend
+    └── settings.gradle         # Konfigurasi Gradle
+
+```
+---
+
+## 6. Hasil Akhir Proyek
 Berdasarkan implementasi yang telah dilakukan, berikut adalah capaian fitur pada aplikasi Stridez:
 
-### 4.1 Fungsionalitas Utama
-* [x] **Dashboard Informatif:** Visualisasi langkah harian dan progres mingguan dengan grafik cincin (*ring chart*).
-* [x] **Tracking Akurat:** Pedometer berfungsi baik pada berbagai posisi perangkat (saku/genggam).
-* [x] **Manajemen Profil:** Fitur edit profil, unggah foto, dan kalkulator BMI otomatis.
-* [x] **Riwayat Aktivitas:** Log aktivitas lari tersimpan lengkap dengan peta rute, durasi, dan jarak.
-
-### 4.2 Tampilan Antarmuka (UI/UX)
-Aplikasi mengusung desain modern dengan warna tema utama **Deep Orange** yang energik. Navigasi menggunakan *Bottom Navigation Bar* untuk kemudahan akses antar menu utama.
-
-### 4.3 Kinerja Aplikasi
-* **Efisiensi Baterai:** Penggunaan sensor dikelola dengan mematikan *stream* (`subscription.cancel()`) saat halaman tidak aktif.
-* **Responsivitas:** Antarmuka berjalan lancar (60fps) berkat optimasi *rebuild* widget yang efisien.
-
+## 6.1 Fungsionalitas Utama
+- [x] **Dashboard Informatif:** Visualisasi langkah harian dan progres mingguan dengan grafik cincin (*ring chart*).
+- [x] **Tracking Akurat:** Pedometer berfungsi baik pada berbagai posisi perangkat (saku/genggam).
+- [x] **Manajemen Profil:** Fitur edit profil, unggah foto, dan kalkulator BMI otomatis.
+- [x] **Riwayat Aktivitas:** Log aktivitas lari tersimpan lengkap dengan peta rute, durasi, dan jarak..
 ---
 
-## 5. Kesimpulan dan Saran
+## 7. Kesimpulan dan Saran
 
-### 5.1 Kesimpulan
+### 7.1 Kesimpulan
 Tim pengembang berhasil menyelesaikan aplikasi Stridez sesuai dengan spesifikasi yang dirancang. Integrasi antara sensor perangkat keras, layanan peta digital, dan sinkronisasi basis data telah berjalan dengan stabil. Aplikasi ini membuktikan bahwa perangkat *mobile* standar dapat difungsikan sebagai alat pemantau kesehatan yang andal.
 
-### 5.2 Saran Pengembangan
+### 7.2 Saran Pengembangan
 Untuk pengembangan selanjutnya, disarankan untuk:
 * Menambahkan fitur sosial (Leaderboard/Sharing) untuk meningkatkan motivasi pengguna.
 * Mengimplementasikan notifikasi lokal untuk pengingat aktivitas.
