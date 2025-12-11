@@ -87,26 +87,7 @@ Sisi server dibangun untuk menangani logika bisnis yang berat dan persistensi da
 * **API:** Menyediakan *endpoints* RESTful untuk manajemen user dan riwayat aktivitas lari.
 ---
 
-## 4. Implementasi Fitur Teknis
-
-### 4.1 Algoritma Pedometer
-Fitur ini memproses data sensor mentah secara mandiri:
-* **Logika Deteksi:** Menggunakan **Magnitude Vector** ($\sqrt{x^2 + y^2 + z^2}$) dari akselerometer 3-sumbu.
-* **Filterisasi:** *Threshold* dinamis (`10.5` - `30.0`) untuk membedakan langkah kaki dengan getaran acak.
-* **Cooldown:** Menerapkan jeda waktu untuk mencegah *double-counting*.
-
-### 4.2 Pelacakan Lari (GPS)
-* **Polyline Rendering:** Merekam koordinat (`LatLng`) real-time untuk visualisasi rute di peta.
-* **Metrik:** Formula *Haversine* untuk menghitung jarak tempuh, Pace, dan Kalori.
-
-### 4.3 Autentikasi Hybrid
-1.  **Firebase Auth:** Google Sign-In, OTP Telepon, Email.
-2.  **Backend Sync:** Sinkronisasi UID dan profil ke server REST API MySQL setelah login berhasil.
-3.  **Local Caching:** Penyimpanan profil di `SharedPreferences`.
-
----
-
-## 5. Struktur Direktori Proyek
+## 4. Struktur Direktori Proyek
 
 ```text
 Stridez-Project/
@@ -133,22 +114,22 @@ Stridez-Project/
 ```
 ---
 
-## 6. Hasil Akhir Proyek
+## 5. Hasil Akhir Proyek
 Berdasarkan implementasi yang telah dilakukan, berikut adalah capaian fitur pada aplikasi Stridez:
 
-## 6.1 Fungsionalitas Utama
+## 5.1 Fungsionalitas Utama
 - [x] **Dashboard Informatif:** Visualisasi langkah harian dan progres mingguan dengan grafik cincin (*ring chart*).
 - [x] **Tracking Akurat:** Pedometer berfungsi baik pada berbagai posisi perangkat (saku/genggam).
 - [x] **Manajemen Profil:** Fitur edit profil, unggah foto, dan kalkulator BMI otomatis.
-- [x] **Riwayat Aktivitas:** Log aktivitas lari tersimpan lengkap dengan peta rute, durasi, dan jarak..
+- [x] **Riwayat Aktivitas:** Log aktivitas lari tersimpan lengkap dengan peta rute, durasi, pace dan jarak.
 ---
 
-## 7. Kesimpulan dan Saran
+## 6. Kesimpulan dan Saran
 
-### 7.1 Kesimpulan
+### 6.1 Kesimpulan
 Tim pengembang berhasil menyelesaikan aplikasi Stridez sesuai dengan spesifikasi yang dirancang. Integrasi antara sensor perangkat keras, layanan peta digital, dan sinkronisasi basis data telah berjalan dengan stabil. Aplikasi ini membuktikan bahwa perangkat *mobile* standar dapat difungsikan sebagai alat pemantau kesehatan yang andal.
 
-### 7.2 Saran Pengembangan
+### 6.2 Saran Pengembangan
 Untuk pengembangan selanjutnya, disarankan untuk:
 * Menambahkan fitur sosial (Leaderboard/Sharing) untuk meningkatkan motivasi pengguna.
 * Mengimplementasikan notifikasi lokal untuk pengingat aktivitas.
